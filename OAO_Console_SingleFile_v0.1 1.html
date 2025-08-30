@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OAO Console — Single-File (v0.1)</title>
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 2rem; line-height: 1.4; }
+  h1 { margin-top: 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  textarea { width: 100%; min-height: 120px; }
+  input[type="text"], select { width: 100%; }
+  .row { margin: 0.75rem 0; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+  .small { font-size: 0.9rem; color: #333; }
+  .btn { padding: 0.6rem 0.9rem; border: 1px solid #999; background: #f5f5f5; cursor: pointer; border-radius: 6px; }
+  .btn:active { transform: translateY(1px); }
+  .bar { display:flex; gap:0.5rem; flex-wrap: wrap; }
+  .card { border:1px solid #ddd; border-radius:8px; padding:1rem; background:#fff; }
+  .muted { color:#666; }
+  .good { color: #0a6; font-weight: 600; }
+  .warn { color: #c80; font-weight: 600; }
+  .bad { color: #c00; font-weight: 600; }
+  footer { margin-top: 2rem; font-size: 0.9rem; color: #555; }
+</style>
+</head>
+<body>
+<h1>OAO Console — Single‑File (v0.1)</h1>
+<p class="muted">RAW → HEARD → Confusions → Next step → Coherence → Seals → Direction/Mission</p>
+
+<div class="grid">
+  <div class="card">
+    <h3>RAW (verbatim)</h3>
+    <textarea id="raw"></textarea>
+  </div>
+  <div class="card">
+    <h3>HEARD (you read back)</h3>
+    <textarea id="heard"></textarea>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>Confusions</h3>
+    <textarea id="confusions"></textarea>
+  </div>
+  <div class="card">
+    <h3>Next Step</h3>
+    <textarea id="next"></textarea>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>Coherence Gauge</h3>
+    <select id="coherence">
+      <option>Green</option>
+      <option>Yellow</option>
+      <option>Red</option>
+    </select>
+    <div class="row">
+      <h3>Direction &amp; Mission</h3>
+      <input id="direction" type="text" placeholder="Direction (Port/Starboard)">
+      <div style="height:0.5rem"></div>
+      <input id="mission" type="text" placeholder="Mission (IRL/URL)">
+    </div>
+  </div>
+  <div class="card">
+    <h3>Seals / Essence</h3>
+    <textarea id="essence" placeholder="Short bullet lines that capture the essence for hashing."></textarea>
+    <div class="row bar">
+      <button class="btn" id="hashBtn">Compute SHA‑384</button>
+      <button class="btn" id="copyHashBtn">Copy Hash</button>
+      <button class="btn" id="downloadTxtBtn">Download .txt</button>
+      <button class="btn" id="downloadJsonBtn">Download .json</button>
+    </div>
+    <div class="row">
+      <div class="small">!SHA384=<span id="hash" class="mono"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Preview</h3>
+<pre id="preview" class="mono small"></pre>
+</div>
+
+<footer>
+  <div class="small">Footer refrain:<br>
+  Not pro, but process—<br>
+  Prose becomes pro se<br>
+  When truth flows.</div>
+  <p class="small muted">This page runs entirely in your browser. SHA‑384 uses the Web Crypto API. No data leaves the device.</p>
+</footer>
+
+<script>
+function sealText(data) {
+  return `!BEGIN BANGCHECK
+Context: OAO Console — Single-File (v0.1)
+RAW: ${data.raw}
+HEARD: ${data.heard}
+Confusions: ${data.confusions}
+Next step: ${data.next}
+Coherence: ${data.coherence}
+Direction: ${data.direction} • Mission: ${data.mission}
+Essence:
+${data.essence}
+!SHA384=${data.hash || ""}
+!END BANGCHECK`;
+}
+
+async function sha384Hex(str) {
+  const enc = new TextEncoder();
+  const buf = await crypto.subtle.digest("SHA-384", enc.encode(str));
+  const arr = Array.from(new Uint8Array(buf));
+  return arr.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function collect() {
+  return {
+    raw: document.getElementById("raw").value.trim(),
+    heard: document.getElementById("heard").value.trim(),
+    confusions: document.getElementById("confusions").value.trim(),
+    next: document.getElementById("next").value.trim(),
+    coherence: document.getElementById("coherence").value,
+    direction: document.getElementById("direction").value.trim(),
+    mission: document.getElementById("mission").value.trim(),
+    essence: document.getElementById("essence").value.replace(/\r\n/g, "\n").trim(),
+    hash: document.getElementById("hash").textContent.trim()
+  };
+}
+
+function render() {
+  const data = collect();
+  document.getElementById("preview").textContent = sealText(data);
+}
+
+document.querySelectorAll("textarea, input, select").forEach(el => {
+  el.addEventListener("input", render);
+});
+
+document.getElementById("hashBtn").addEventListener("click", async () => {
+  const essence = document.getElementById("essence").value.replace(/\r\n/g, "\n").trim() + "\n";
+  const hex = await sha384Hex(essence);
+  document.getElementById("hash").textContent = hex;
+  render();
+});
+
+document.getElementById("copyHashBtn").addEventListener("click", async () => {
+  const h = document.getElementById("hash").textContent.trim();
+  if (!h) return;
+  await navigator.clipboard.writeText(h);
+  alert("SHA‑384 copied to clipboard.");
+});
+
+function download(name, text) {
+  const blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("downloadTxtBtn").addEventListener("click", () => {
+  const data = collect();
+  const txt = sealText(data) + "\n";
+  const ts = new Date().toISOString().replace(/[:.]/g, "").slice(0,15) + "Z";
+  download(`OAO_Console_Seal_${ts}.txt`, txt);
+});
+
+document.getElementById("downloadJsonBtn").addEventListener("click", () => {
+  const data = collect();
+  const ts = new Date().toISOString().replace(/[:.]/g, "").slice(0,15) + "Z";
+  download(`OAO_Console_Seal_${ts}.json`, JSON.stringify(data, null, 2));
+});
+
+render();
+</script>
+</body>
+</html>
