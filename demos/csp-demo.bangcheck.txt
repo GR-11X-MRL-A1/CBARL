@@ -1,0 +1,9 @@
+!BEGIN CSP-DEMO
+!RPP sha384=c7095972fbf517cbe79c90bf15de19c32133da544af5c3086c9df6e94b10b21c18e325726da0c5930df745724d4a971e size=11 filename=demo.txt
+!CSL {"alg":{"anchor":"CSP-A1/DEMO-2025-09","s1":"sha384","s2":"sha384"},"anchor":{"bodies":["Sun","Jupiter"],"frame":"ECLIPJ2000","hash":"156927861546c6352717a958a955a080eaf0709f1529be83be646db8e4f6cfac129db018b0a71c15c523bb1c4850d239","model":"DEMO","precision":"microrad|microau","timescale":"UTC"},"csp":"1","duration_ms":5000,"location":{"hint":"demo","type":"logical"},"rpp":{"filename":"demo.txt","sha384":"c7095972fbf517cbe79c90bf15de19c32133da544af5c3086c9df6e94b10b21c18e325726da0c5930df745724d4a971e","size":11},"t_in":"2025-09-30T12:00:00Z","t_out":"2025-09-30T12:00:05Z","timescale":"UTC","variant":"CSL-Min"}
+!S1_CONTENT c7095972fbf517cbe79c90bf15de19c32133da544af5c3086c9df6e94b10b21c18e325726da0c5930df745724d4a971e
+!S2_SHA384 d7306710d175b2cd76af87d2558395c5d275cf1af109be371580579ce9d0ecce20e7eb6d9c74f612474c35c009ffd620
+!ANCHORS model=DEMO timescale=UTC frame=ECLIPJ2000 bodies=Sun,Jupiter precision=microrad|microau algo=CSP-A1/DEMO-2025-09
+!NOTES demo vectors for harness; S2 uses raw S1 bytes per spec
+!END
+!SHA384-BLOCK ca6eb6461ae97f679940837e60bbc28e55adc2acd84e8ab4519c5119e18fbb6000f561cafe53b61b64cf8a082d5b9939
