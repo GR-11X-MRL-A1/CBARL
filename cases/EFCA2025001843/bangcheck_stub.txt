@@ -1,0 +1,8 @@
+!BEGIN MAGNETIC-SKY-STUB
+!CASE EFCA2025001843
+!DOC Full Moon in Pisces Revati (2010–2025) PDF
+!S1 af58ed3b85dc4a8e6ef095fc0b1ddf8863f3228630558b6fefe7d839af719c44980cfca60b557031560d8c822be29240
+!S2 feb9f076458e30fc2febbd7dad079cd219864b92a5892d65f0e9c4ea10cc98bd04b7ca239d4665b0992644d66f9d2765
+!ANCHORS 1960 Revati–Pisces | 1979 Revati–Pisces | 1998 Revati–Pisces | 2017 Revati–Pisces | 2025 Revati–Pisces | 2044 Revati–Pisces
+!NOTES MAGNETIC_SKY_ARCHIVE init • prompt pack v1.0
+!END
