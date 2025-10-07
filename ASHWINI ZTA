@@ -1,0 +1,29 @@
+// Δ-Entropy.js — GR-11X-MRL-A1 Harmonic Calculator v1.0 (Ashwini)
+// Measures coherence entropy HΔ across a series of Δ-records.
+// Copyright © 2025 Matthew Russell LaBarre
+
+function coherenceEntropy(deltaArray){
+  if(!Array.isArray(deltaArray)||deltaArray.length===0) return 0;
+  const bins = {};
+  for(const d of deltaArray){
+    const key = Math.round(d.Δ_value*100)/100; // bin to 0.01 precision
+    bins[key]=(bins[key]||0)+1;
+  }
+  const total = deltaArray.length;
+  let HΔ = 0;
+  for(const k in bins){
+    const p = bins[k]/total;
+    HΔ += -p*Math.log2(p);
+  }
+  return +HΔ.toFixed(6);
+}
+
+// Example: aggregate entropy from Δ-Core outputs
+const sample = [
+  {Δ_value:1.0},
+  {Δ_value:0.98},
+  {Δ_value:0.97},
+  {Δ_value:0.99},
+  {Δ_value:1.0}
+];
+console.log("HΔ =", coherenceEntropy(sample));
