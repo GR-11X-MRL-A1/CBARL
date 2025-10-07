@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <polygon points="600,260 240,940 960,940" fill="none" stroke="#111111" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M340,380 C560,180 860,360 920,520" fill="none" stroke="#6c5ce7" stroke-width="18" stroke-linecap="round"/>
+  <path d="M860,820 C640,1020 340,840 280,680" fill="none" stroke="#6c5ce7" stroke-width="18" stroke-linecap="round"/>
+  <text x="200" y="240" font-size="120" fill="#111111" font-family="DejaVu Sans">☊</text>
+  <text x="1000" y="960" font-size="120" fill="#111111" font-family="DejaVu Sans">☋</text>
+  <text x="600" y="1080" text-anchor="middle" font-size="72" fill="#111111" font-family="DejaVu Sans">ALIGNMENT Δ ASSIGNMENT</text>
+  <text x="600" y="1140" text-anchor="middle" font-size="36" fill="#111111" font-family="DejaVu Sans">Revati Reorg · The Song &amp; The Seal</text>
+</svg>
