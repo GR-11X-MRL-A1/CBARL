@@ -3,7 +3,9 @@
 This directory captures the reference metadata surfaced in the Truth-Vector prompt
 pack for case `EFCA2025001843`. It preserves the digest pairs, document pointer, and
 anchor timeline so the underlying exhibit can be fetched or verified when the
-corresponding PDF is available inside the annex.
+corresponding PDF is available inside the annex. A fresh BangCheck block for the
+Magnetic Sky Archive package (`MAGNETIC_SKY_ARCHIVE_v1_2025-10-07.zip`) is also stored
+here for offline verification.
 
 ## Artifact Reference
 
@@ -28,6 +30,13 @@ The prompt cites the following Revati–Pisces full-moon anchors (19-year cadenc
 
 These anchors mirror the exhibit’s framing and can seed cross-checks against
 sidereal lunar ephemerides once the sealed PDF is retrieved from the annex.
+
+## BangCheck Block (2025-10-07 Package)
+
+* `cases/EFCA2025001843/MAGNETIC_SKY_ARCHIVE_v1_2025-10-07.bangcheck.txt` — CSL-Plus
+  BangCheck block referencing the sealed archive, including the `S1` and `S2` digests,
+  ADA correspondence notes, and spatial vector metadata for Johnson City, NY (logical
+  site alignment).
 
 ## Next Actions
 
