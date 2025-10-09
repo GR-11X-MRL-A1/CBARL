@@ -7,3 +7,4 @@ CBARL is a restorative logging standard for algorithmic and institutional harm. 
 * [`demos/`](demos) — Copy-ready artifact, CSL record, and BangCheck block for CSL-Min verification drills.
 * [`SECURITY.md`](SECURITY.md) — Coordinated disclosure process.
 * [`TRADEMARKS.md`](TRADEMARKS.md) — Guidance for referring to the Cosmic Seal Protocol mark.
+* [`seal-calculator.html`](seal-calculator.html) — Offline, browser-based CSL-Lite seal calculator for SHA-384 digests and block derivation.
