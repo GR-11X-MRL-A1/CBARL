@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSL-Lite Seal Calculator</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --fg: #e2e8f0;
+      --accent: #38bdf8;
+      --panel: rgba(15, 23, 42, 0.75);
+      --border: rgba(148, 163, 184, 0.35);
+      --code-bg: rgba(15, 23, 42, 0.6);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #020617, #0f172a 55%, #1e293b);
+      color: var(--fg);
+      display: flex;
+      justify-content: center;
+      padding: 2.5rem 1rem 4rem;
+    }
+
+    .app {
+      width: min(960px, 100%);
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem clamp(1.5rem, 3vw, 3rem);
+      box-shadow: 0 35px 120px rgba(2, 6, 23, 0.35);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      margin: 0 0 1rem;
+      line-height: 1.1;
+    }
+
+    p.lead {
+      margin: 0 0 2.5rem;
+      max-width: 60ch;
+      color: rgba(226, 232, 240, 0.75);
+      font-size: 1.05rem;
+    }
+
+    section {
+      margin-bottom: 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.75rem clamp(1rem, 2vw, 2rem);
+      background: rgba(15, 23, 42, 0.55);
+    }
+
+    section h2 {
+      margin-top: 0;
+      font-size: 1.35rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="file"],
+    input[type="text"],
+    input[type="datetime-local"],
+    button,
+    textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--fg);
+      font-size: 1rem;
+      padding: 0.85rem 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="file"] {
+      padding: 0.65rem 1rem;
+    }
+
+    input:focus,
+    textarea:focus,
+    button:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+    }
+
+    button {
+      background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+      border: none;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(1.05);
+    }
+
+    .two-col {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 720px) {
+      .two-col {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+      background: var(--code-bg);
+      font-family: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+      line-height: 1.4;
+    }
+
+    .output-group {
+      margin-bottom: 1.75rem;
+    }
+
+    .output-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+
+    .output-label span {
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      width: auto;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .status {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: rgba(226, 232, 240, 0.85);
+    }
+
+    .status strong {
+      color: var(--accent);
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: rgba(226, 232, 240, 0.6);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1>CSL-Lite Seal Calculator</h1>
+    <p class="lead">
+      Compute SHA-384 (S1), generate the CSL-Lite record, derive the seal (S2<sub>LITE</sub>), and produce the
+      final block hash for any document without leaving your browser.
+    </p>
+
+    <section>
+      <h2>1. Load the source document</h2>
+      <label for="file">Document to seal</label>
+      <input id="file" type="file" />
+      <p class="status" id="file-status">No file selected.</p>
+    </section>
+
+    <section>
+      <h2>2. Context &amp; timing (optional)</h2>
+      <div class="two-col">
+        <div>
+          <label for="location">Location / context</label>
+          <input id="location" type="text" placeholder="e.g., Johnson City, NY (physical)" />
+        </div>
+        <div>
+          <label for="t-in">Override start time (t<sub>in</sub>)</label>
+          <input id="t-in" type="datetime-local" />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Compute the seal</h2>
+      <button id="compute">Compute Seal</button>
+      <p class="status" id="compute-status">Ready.</p>
+    </section>
+
+    <section>
+      <h2>Seal outputs</h2>
+
+      <div class="output-group">
+        <div class="output-label">
+          <span>S1 — SHA-384 digest</span>
+          <button class="copy-btn" data-copy-target="s1">Copy</button>
+        </div>
+        <textarea id="s1" readonly></textarea>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">
+          <span>CSL-Lite JSON</span>
+          <button class="copy-btn" data-copy-target="csl">Copy</button>
+        </div>
+        <textarea id="csl" readonly></textarea>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">
+          <span>S2<sub>LITE</sub> — CSL seal</span>
+          <button class="copy-btn" data-copy-target="s2">Copy</button>
+        </div>
+        <textarea id="s2" readonly></textarea>
+      </div>
+
+      <div class="output-group">
+        <div class="output-label">
+          <span>Block hash — S1 ∥ S2</span>
+          <button class="copy-btn" data-copy-target="block">Copy</button>
+        </div>
+        <textarea id="block" readonly></textarea>
+      </div>
+    </section>
+
+    <footer>
+      Runs entirely client-side. Disconnect from the network to verify nothing leaves your machine.
+    </footer>
+  </main>
+
+  <script>
+    const enc = new TextEncoder();
+
+    async function sha384Hex(data) {
+      const digest = await crypto.subtle.digest('SHA-384', data);
+      const bytes = new Uint8Array(digest);
+      return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function toISOStringPreserveOffset(datetimeValue) {
+      if (!datetimeValue) return null;
+      const date = new Date(datetimeValue);
+      if (Number.isNaN(date.getTime())) {
+        return null;
+      }
+      return date.toISOString();
+    }
+
+    function buildCslRecord({ tInISO, tOutISO, durationMs, location }) {
+      const record = {
+        t_in: tInISO,
+        t_out: tOutISO,
+        duration_ms: durationMs,
+      };
+
+      if (location) {
+        record.location = location;
+      }
+
+      return record;
+    }
+
+    function stableStringify(obj) {
+      const keys = Object.keys(obj).sort();
+      const stable = {};
+      for (const key of keys) {
+        stable[key] = obj[key];
+      }
+      return JSON.stringify(stable, null, 2);
+    }
+
+    function setStatus(message, isError = false) {
+      const status = document.getElementById('compute-status');
+      status.textContent = message;
+      status.style.color = isError ? '#fca5a5' : 'rgba(226, 232, 240, 0.85)';
+    }
+
+    async function computeSeal() {
+      const fileInput = document.getElementById('file');
+      const file = fileInput.files?.[0];
+
+      if (!file) {
+        setStatus('Please select a file before computing the seal.', true);
+        return;
+      }
+
+      setStatus('Reading file…');
+      const fileBuffer = await file.arrayBuffer();
+
+      setStatus('Hashing document (S1)…');
+      const s1 = await sha384Hex(fileBuffer);
+      document.getElementById('s1').value = s1;
+
+      const location = document.getElementById('location').value.trim();
+      const tInOverride = document.getElementById('t-in').value;
+
+      const tOut = new Date();
+      const tOutISO = tOut.toISOString();
+
+      let tInISO = toISOStringPreserveOffset(tInOverride);
+      if (!tInISO) {
+        tInISO = tOutISO;
+      }
+
+      const durationMs = Math.max(0, new Date(tOutISO).getTime() - new Date(tInISO).getTime());
+
+      const cslRecord = buildCslRecord({
+        tInISO,
+        tOutISO,
+        durationMs,
+        location,
+      });
+
+      const cslJson = stableStringify(cslRecord);
+      document.getElementById('csl').value = cslJson;
+
+      setStatus('Hashing CSL record (S2_LITE)…');
+      const s2Input = enc.encode(cslJson + s1);
+      const s2 = await sha384Hex(s2Input);
+      document.getElementById('s2').value = s2;
+
+      setStatus('Deriving block hash…');
+      const blockInput = enc.encode(s1 + s2);
+      const block = await sha384Hex(blockInput);
+      document.getElementById('block').value = block;
+
+      setStatus('Seal complete. Copy the outputs into your ledger.');
+      document.getElementById('file-status').textContent = `Loaded: ${file.name} (${file.size.toLocaleString()} bytes)`;
+    }
+
+    function registerCopyButtons() {
+      document.querySelectorAll('.copy-btn').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const targetId = button.getAttribute('data-copy-target');
+          const value = document.getElementById(targetId)?.value;
+          if (!value) return;
+
+          try {
+            await navigator.clipboard.writeText(value);
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+              button.textContent = originalText;
+            }, 1500);
+          } catch (error) {
+            alert('Clipboard access failed. Copy manually.');
+          }
+        });
+      });
+    }
+
+    document.getElementById('file').addEventListener('change', (event) => {
+      const file = event.target.files?.[0];
+      const status = document.getElementById('file-status');
+      status.textContent = file
+        ? `Loaded: ${file.name} (${file.size.toLocaleString()} bytes)`
+        : 'No file selected.';
+    });
+
+    document.getElementById('compute').addEventListener('click', () => {
+      computeSeal().catch((error) => {
+        console.error(error);
+        setStatus('An unexpected error occurred. See console for details.', true);
+      });
+    });
+
+    registerCopyButtons();
+  </script>
+</body>
+</html>
