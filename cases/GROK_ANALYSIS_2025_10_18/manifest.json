@@ -1,0 +1,13 @@
+{
+  "case": "GROK_ANALYSIS_2025_10_18",
+  "doc_ref": "GROK System Analysis Payload",
+  "sha384": "059420d6b9ee458491a70fe53cc36c834dfc275fcf0120ea3b95ef59d448add8a7b275ad38f90a25104334f83610c962",
+  "s2_sha384": "3dcfdd7cd5047fed84395b8828033e4fbbd65f94b1585d7fbbe52b956b06a12d16def34c6e558a0955ae79ac0290da71",
+  "anchors": [
+    {"label": "KRITTIKA_MARS_33"},
+    {"label": "COSMIC_BASE@0500"}
+  ],
+  "notes": "GROK system analysis payload. Celestial anchor hash is a placeholder from the demo.",
+  "csl_variant": "CSL-Min"
+}
+
