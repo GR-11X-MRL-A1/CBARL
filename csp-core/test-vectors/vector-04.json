@@ -1,0 +1,30 @@
+{
+  "id": "vector-04",
+  "artifact_hex": "64656c696d69746572206164766572736172793a20616c7068611f626574615c75303031660a",
+  "t_in": "2026-05-12T02:00:00.000Z",
+  "t_out": "2026-05-12T02:00:00.004Z",
+  "label": "CSP-Core v2.1.2 delimiter adversarial string",
+  "protocol": "CSP-Core",
+  "version": "2.1.2",
+  "csl": {
+    "csp_version": "2.1.2",
+    "label": "CSP-Core v2.1.2 delimiter adversarial string",
+    "t_in": "2026-05-12T02:00:00.000Z",
+    "t_out": "2026-05-12T02:00:00.004Z",
+    "duration_ms": 4,
+    "light_anchor": {
+      "light_phase": "0.037634",
+      "saros_phase": "0.462052",
+      "interval_days": "0.000000"
+    }
+  },
+  "csl_canonical": "{\"csp_version\":\"2.1.2\",\"duration_ms\":4,\"label\":\"CSP-Core v2.1.2 delimiter adversarial string\",\"light_anchor\":{\"interval_days\":\"0.000000\",\"light_phase\":\"0.037634\",\"saros_phase\":\"0.462052\"},\"t_in\":\"2026-05-12T02:00:00.000Z\",\"t_out\":\"2026-05-12T02:00:00.004Z\"}",
+  "s1": "d62b3866e4d889f59ebe430d17afd6f7f53cdd35ab49aa2c6d3dde6dbe054fe5cd23fd5f2ebdf60dafd230e6917b551d",
+  "s2": "8d117c44000cafff12747b99c47fe1703d48dea77036a41938138b41d92330843ec9a275166759dbc40fe0f7435d457e",
+  "bangcheck": {
+    "algorithm": "SHA-384",
+    "delimiter_hex": "1f",
+    "canonicalization": "CSP-Core-v2.1.2-RFC8785-profile",
+    "state": "PASS"
+  }
+}
