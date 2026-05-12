@@ -1,0 +1,25 @@
+{
+  "protocol": "CSP-Core",
+  "version": "2.1.2",
+  "csl": {
+    "csp_version": "2.1.2",
+    "label": "CSP-Core Conformance Test Suite v2.1.2",
+    "t_in": "2026-05-12T02:00:00.000Z",
+    "t_out": "2026-05-12T02:00:00.042Z",
+    "duration_ms": 42,
+    "light_anchor": {
+      "light_phase": "0.037634",
+      "saros_phase": "0.462052",
+      "interval_days": "0.000000"
+    }
+  },
+  "csl_canonical": "{\"csp_version\":\"2.1.2\",\"duration_ms\":42,\"label\":\"CSP-Core Conformance Test Suite v2.1.2\",\"light_anchor\":{\"interval_days\":\"0.000000\",\"light_phase\":\"0.037634\",\"saros_phase\":\"0.462052\"},\"t_in\":\"2026-05-12T02:00:00.000Z\",\"t_out\":\"2026-05-12T02:00:00.042Z\"}",
+  "s1": "c3d8d19fc95bf775d0b8629b32de25f7e7ab6acd0f460a08011281e3dfd310327d95ce98654334c565910bfe9028493d",
+  "s2": "9cf3a43b75713d911811074f20d9c497e26559cf09e20946d3f50f5f973abece34f297521b54de55248ba907308b8845",
+  "bangcheck": {
+    "algorithm": "SHA-384",
+    "delimiter_hex": "1f",
+    "canonicalization": "CSP-Core-v2.1.2-RFC8785-profile",
+    "state": "PASS"
+  }
+}
